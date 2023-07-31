@@ -9,35 +9,35 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-    public class GenreRepository : BaseRepository, IGenreRepository
+    public class GenreRepository : GenericRepository<Genre>, IGenreRepository
     {
         public GenreRepository(AppDbContext context) : base(context)
         {
         }
 
-        public async Task AddAsync(Genre genre)
-        {
-            await _context.Genres.AddAsync(genre);
-        }
+        //public async Task AddAsync(Genre genre)
+        //{
+        //    await _context.Genres.AddAsync(genre);
+        //}
 
-        public void Delete(Genre genre)
-        {
-            _context.Genres.Remove(genre);  
-        }
+        //public void Delete(Genre genre)
+        //{
+        //    _context.Genres.Remove(genre);  
+        //}
 
-        public async Task<Genre?> FindByIdAsync(Guid id)
-        {
-            return await _context.Genres.FindAsync(id);
-        }
+        //public async Task<Genre?> FindByIdAsync(Guid id)
+        //{
+        //    return await _context.Genres.FindAsync(id);
+        //}
 
-        public async Task<IEnumerable<Genre>?> ListAsync()
-        {
-            return await _context.Genres.ToListAsync();
-        }
+        //public async Task<IEnumerable<Genre>?> ListAsync()
+        //{
+        //    return await _context.Genres.ToListAsync();
+        //}
 
-        public void Update(Genre genre)
-        {
-            _context.Update(genre);
-        }
+        //public void Update(Genre genre)
+        //{
+        //    _context.Update(genre);
+        //}
     }
 }

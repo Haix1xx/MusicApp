@@ -4,7 +4,8 @@ using MusicApp.Services;
 using Persistence;
 using Persistence.Repositories;
 using Persistence.Repository.Abstractions;
-
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 namespace MusicApp
 {
     public class Program
@@ -25,8 +26,13 @@ namespace MusicApp
                 options.UseSqlServer(connectionString);
             });
 
-            builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //builder.Services.AddScoped<IGenreRepository, GenreRepository>();
             builder.Services.AddScoped<IGenreService, GenreService>();
+            builder.Services.AddScoped<IArtistService, ArtistService>();
+            builder.Services.AddScoped<ISongService, SongService>();
+            builder.Services.AddScoped<IAlbumService, AlbumService>();
+            builder.Services.AddAutoMapper(typeof(Contracts.AssemblyReference).Assembly);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

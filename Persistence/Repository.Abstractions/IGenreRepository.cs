@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repository.Abstractions
 {
-    public interface IGenreRepository
+    public interface IGenreRepository : IGenericRepository<Genre>
     {
-        Task<IEnumerable<Genre>?> ListAsync();
-        Task AddAsync(Genre genre);
-        Task<Genre?> FindByIdAsync(Guid id);
-        void Update(Genre genre);
-        void Delete(Genre genre);
     }
 }

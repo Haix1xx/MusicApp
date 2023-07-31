@@ -8,6 +8,14 @@ namespace Persistence.Repository.Abstractions
 {
     public interface IUnitOfWork
     {
-        Task CommitChange();
+        IGenreRepository GenreRepository { get; }
+        IArtistRepository ArtistRepository { get; }
+        IAlbumRepository AlbumRepository { get; }
+        ISongRepository SongRepository { get; }
+
+        void Commit();
+        void RollBack();
+        Task CommitAsync();
+        Task RollBackAsync();
     }
 }

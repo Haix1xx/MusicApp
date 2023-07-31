@@ -6,38 +6,22 @@ using Persistence.Repository.Abstractions;
 
 namespace MusicApp.Services
 {
-    public class GenreService : IGenreService
+    public class ArtistService : IArtistService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public GenreService(IUnitOfWork unitOfWork)
+        public ArtistService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-
-        public async Task<BaseResponse> AddAsync(Genre genre)
+        public async Task<Artist?> GetByIdAsync(Guid id)
         {
-            try
-            {
-                await _unitOfWork.GenreRepository.AddAsync(genre);
-                await _unitOfWork.CommitAsync();
-                return new BaseResponse(true);
-            }
-            catch(Exception ex)
-            {
-                return new BaseResponse(ex.Message);
-            }
+            return await _unitOfWork.ArtistRepository.FindAsync(id);
         }
-
-        public async Task<BaseResponse> DeleteAsync(Guid id)
+        public async Task<BaseResponse> AddAsync(Artist artist)
         {
-            var existingGenre = await _unitOfWork.GenreRepository.FindAsync(id);
-            if (existingGenre == null)
-            {
-                return new BaseResponse("Genre not found");
-            }
             try
             {
-                _unitOfWork.GenreRepository.Remove(existingGenre);
+                await _unitOfWork.ArtistRepository.AddAsync(artist);
                 await _unitOfWork.CommitAsync();
                 return new BaseResponse(true);
             }
@@ -47,27 +31,47 @@ namespace MusicApp.Services
             }
         }
 
-        public async Task<IEnumerable<Genre>?> ListAsync()
+        public async Task<BaseResponse> DeleteAsync(Guid id)
         {
-            return await _unitOfWork.GenreRepository.GetAllAsync();
+            var existingArtist = await _unitOfWork.ArtistRepository.FindAsync(id);
+            if (existingArtist == null)
+            {
+                return new BaseResponse("Genre not found");
+            }
+            try
+            {
+                _unitOfWork.ArtistRepository.Remove(existingArtist);
+                await _unitOfWork.CommitAsync();
+                return new BaseResponse(true);
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse(ex.Message);
+            }
         }
 
-        public async Task<BaseResponse> UpdateAsync(Guid id, Genre genre)
+        public async Task<IEnumerable<Artist>?> ListAsync()
         {
-            var existingGenre = await _unitOfWork.GenreRepository.FindAsync(id);
-            if (existingGenre == null)
+            return await _unitOfWork.ArtistRepository.GetAllAsync();
+        }
+
+        public async Task<BaseResponse> UpdateAsync(Guid id, Artist artist)
+        {
+            var existingArtist = await _unitOfWork.ArtistRepository.FindAsync(id);
+            if (existingArtist == null)
             {
                 return new BaseResponse("Genre not found");
             }
 
-            existingGenre.Name = genre.Name;
+            existingArtist.Name = artist.Name;
+            existingArtist.About = artist.About;
             try
             {
-                _unitOfWork.GenreRepository.Remove(existingGenre);
+                _unitOfWork.ArtistRepository.Update(existingArtist);
                 await _unitOfWork.CommitAsync();
                 return new BaseResponse(true);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new BaseResponse(ex.Message);
             }
